@@ -1,42 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
-  },
+  // Enable standalone output for Docker deployment
+  output: 'standalone',
+  
+  // Optimize images for production
   images: {
+    unoptimized: false,
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'utfs.io',
-      },
-      {
-        protocol: 'https',
-        hostname: 'uploadthing.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'avatars.githubusercontent.com',
-      },
+      // Add your remote image domains here
+      // {
+      //   protocol: 'https',
+      //   hostname: 'example.com',
+      // },
     ],
   },
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
-  swcMinify: true,
-  poweredByHeader: false,
-  reactStrictMode: true,
-  compress: true,
+
+  // Security headers
   async headers() {
     return [
       {
@@ -52,12 +31,18 @@ const nextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            value: 'origin-when-cross-origin',
           },
         ],
       },
-    ]
+    ];
   },
-}
 
-module.exports = nextConfig
+  // Experimental features for better performance
+  experimental: {
+    // Enable if using app directory
+    // appDir: true,
+  },
+};
+
+module.exports = nextConfig;
